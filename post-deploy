@@ -6,7 +6,7 @@ post-deploy-script() {
     local APP="$1"; verify_app_name "$APP"
     local SCRIPT_PATH="$DOKKU_ROOT/$APP/POST_DEPLOY_SCRIPT"
 
-    dokku_log_info1 "Checking for post deploy script..."
+    dokku_log_info1 "Web"
 
     # No script found abort
     if [[ ! -f "$SCRIPT_PATH" ]]; then
