@@ -7,8 +7,11 @@ post-deploy-script() {
     local SCRIPT_PATH="$DOKKU_ROOT/$APP/POST_DEPLOY_SCRIPT"
 
     dokku_log_info1 "Connecting to web network"
+    local containers = "$(get_app_running_container_ids $APP)"
+    dokku_log_info1 "$containers"
     for container_id in $(get_app_running_container_ids $APP)
     do
+        dokku_log_info1 "connecting $container_id to web"
         docker network connect web $container_id
     done
     
