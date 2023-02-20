@@ -6,17 +6,13 @@ post-deploy-script() {
     local APP="$1"; verify_app_name "$APP"
     local SCRIPT_PATH="$DOKKU_ROOT/$APP/POST_DEPLOY_SCRIPT"
 
-    dokku_log_info1 "Web"
-
-    # No script found abort
-    if [[ ! -f "$SCRIPT_PATH" ]]; then
-        dokku_log_info1 "No post deploy script found."
-        return 0
-    fi
-
-    dokku_log_info1 "Executing post deploy script..."
-    local OUTPUT=$(source "$SCRIPT_PATH")
-    dokku_log_verbose_quiet "$OUTPUT"
+    dokku_log_info1 "Connecting to web network"
+    for container_id in $(get_app_running_container_ids $APP)
+    do
+        docker network connect web $container_id
+    done
+    
+    dokku_log_info1 "Connecting to web network done..."
 }
 
 post-deploy-script "$@"
