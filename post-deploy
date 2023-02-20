@@ -13,6 +13,8 @@ post-deploy-script() {
     do
         dokku_log_info1 "connecting $container_id to web"
         docker network connect web $container_id
+        dokku_log_info1 "disconnecting $container_id from bridge"
+        docker network disconnect bridge $container_id
     done
     
     dokku_log_info1 "Connecting to web network done..."
